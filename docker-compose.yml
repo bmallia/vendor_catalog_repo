@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  service:
+    build: .
+    shm_size: 2gb
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8080" 
+    volumes:
+      - ./app:/app
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - DB_HOST= db
+      - DB_NAME=postgres
+      - DB_USER=bruno
+      - DB_PASS=bruno123
+    volumes:
+      - postgres_data:/var/lib/postgres/data/
+    ports:
+      - "5433:5432"
+  
+volumes:
+  postgres_data:   
