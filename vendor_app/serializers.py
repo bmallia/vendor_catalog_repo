@@ -10,7 +10,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class VendorSerializer(serializers.ModelSerializer):
-
-     class Meta:
-         model = Vendor
-         fields = '__all__'
+    products = ProductSerializer(read_only=True, many=True)
+    
+    class Meta:
+        model = Vendor
+        fields = '__all__'
