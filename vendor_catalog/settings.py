@@ -92,10 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'vendor_catalog',
-        'USER': username,
-        'PASSWORD': password,
-        'HOST': hostname,
-        'PORT': port,
+        'USER': "bruno",
+        'PASSWORD': "bruno123",
+        'HOST': "localhost",
+        'PORT': 5432,
     }
 }
 

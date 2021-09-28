@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import Vendor, Product
 
 class VendorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'cnpj', 'city')
+    list_display = ('id', 'name', 'cnpj', 'city', 'products')
     list_display_links = ('id', 'name')
     search_fields = ('id','name',)
     fields = ["id","name", "cnpj", "city", "products"]
@@ -16,5 +16,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('id','name',)
     list_per_page = 20
 
-admin.site.register(Vendor, VendorAdmin)
-admin.site.register(Product, ProductAdmin)
+##admin.site.register(Vendor, VendorAdmin)
+##admin.site.register(Product, ProductAdmin)
+admin.site.register(Vendor)
+admin.site.register(Product)

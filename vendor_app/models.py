@@ -21,8 +21,9 @@ class Vendor(models.Model):
         db_table = 'vendor'
 
     name= CharField(max_length=255)
-    cnpj = CharField(max_length=14)
+    cnpj = CharField(max_length=14, unique=True)
     city = CharField(max_length=255,blank=True)
+    
     products = models.ManyToManyField(Product)
 
     def __str__(self):

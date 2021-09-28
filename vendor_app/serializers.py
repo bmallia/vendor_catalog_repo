@@ -10,8 +10,16 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class VendorSerializer(serializers.ModelSerializer):
-    products = ProductSerializer(read_only=True, many=True)
+    """serializing vendors"""
+    products = ProductSerializer(read_only=False, many=True)
     
     class Meta:
         model = Vendor
         fields = '__all__'
+        depth = 1
+
+class ListProductVendorSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(read_only=False, required=False, many=True)
+    class Meta:
+        model = Vendor
+        ordering = ['name']
