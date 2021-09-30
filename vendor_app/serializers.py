@@ -18,8 +18,19 @@ class VendorSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
+
+    def validate(self, attrs):
+
+        if (not Product.objects.filter(cpnj=attrs['cnpj']).exists()):
+            raise serializers.ValidationError('Já existe este CNPJ cadastrado')
+        
+        return attrs
+
 class ListProductVendorSerializer(serializers.ModelSerializer):
     products = ProductSerializer(read_only=False, required=False, many=True)
     class Meta:
         model = Vendor
         ordering = ['name']
+        exclude = ['id']
+    
+    

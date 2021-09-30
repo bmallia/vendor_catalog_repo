@@ -6,6 +6,8 @@ class TestSetUp(APITestCase):
     def setUp(self):
         self.vendor_url=reverse('vendor-list')
         self.product_url=reverse('product-list')
+        
+        ##self.product_search_url= reverse('productSearch')
 
         self.vendor_data={
             "products": [
@@ -18,7 +20,9 @@ class TestSetUp(APITestCase):
         ],
         "name": "Jhony3",
         "cnpj": "30831928000137",
-        "city": "Rio"
+        "city": "Rio",
+        "id":1,
+
         }
 
         self.product_data={

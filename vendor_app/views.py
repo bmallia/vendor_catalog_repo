@@ -1,3 +1,5 @@
+from django.db.models.query import QuerySet
+from django.db.models.sql import query
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from vendor_app.models import Product, Vendor
@@ -43,15 +45,61 @@ class VendorViewSet(viewsets.ModelViewSet):
             new_vendor.products.add(product_obj)
         
         serializer = VendorSerializer(new_vendor)
+        serializer.validate(data)
+
         return Response(serializer.data)
 
-class ListVendorProductViewSet(generics.ListAPIView):
-    """ Listing vendors and related products """
+class ListVendorViewSet(generics.ListAPIView):
+    """ Listing vendors with many field: id, name, cnpj, city """
+    serializer_class = ListProductVendorSerializer
+    model = Vendor
+    pagination_class = StandardResultsSetPagination
+    
     
     def get_queryset(self):
         
-        queryset = Vendor.objects.filter(id=self.kwargs['pk'])
+           
+        name_field = self.kwargs['name']
+        cnpj_field = self.kwargs['cnpj']
+        city_field = self.kwargs['city']
+
+        args = {}
+
+        if name_field != 'None':
+            args['name'] = name_field
+
+        if cnpj_field != 'None':
+            args['cnpj'] = cnpj_field
+
+        if city_field != 'None':
+            args['city'] = city_field
+
+        queryset = Vendor.objects.filter(**args)
+        
+
         return queryset
 
-    serializer_class = ListProductVendorSerializer
-    
+class ListProductViewSet(generics.ListAPIView):
+    """ List Product with mayfield (id, name, price, code) """
+    serializer_class = ProductSerializer
+    model = Product
+    ##pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+       
+        params = {}
+        name_field = self.kwargs['name']
+        price_field = self.kwargs['price']
+        code_field = self.kwargs['code']
+
+        if code_field:
+            params['code'] = code_field
+       
+        if name_field:
+           params['name'] = name_field
+        
+        if price_field:
+            params['price'] = price_field
+
+        queryset = Product.objects.filter(**params)
+        return queryset

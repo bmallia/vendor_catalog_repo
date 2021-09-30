@@ -13,7 +13,7 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.code
 
 class Vendor(models.Model):
 
@@ -28,3 +28,4 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.name
+
