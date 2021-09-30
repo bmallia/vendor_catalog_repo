@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wcvirs#ih&w$vmpzn9m0vulbn#nc+q6=gxv44&c032cf84@e#b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =  int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = []
-
+##ALLOWED_HOSTS = []
+ALLOWED_HOSTS = str(os.environ.get("DJANGO_ALLOWED_HOSTS")).split(" ")
 
 # Application definition
 REST_FRAMEWORK = {
@@ -82,20 +82,19 @@ WSGI_APPLICATION = 'vendor_catalog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-hostname = os.getenv("DB_HOST")
-username = os.getenv("DB_USER")
-password = os.getenv("DB_PASS")
-port = os.getenv("DB_PORT")
-name = os.getenv("DB_NAME")
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vendor_catalog',
-        'USER': "bruno",
-        'PASSWORD': "bruno123",
-        'HOST': "localhost",
-        'PORT': 5432,
+        'ENGINE': os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        'NAME': os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+        'USER': os.environ.get("SQL_USER", "user"),
+        'PASSWORD': os.environ.get("SQL_PASSWORD", "password"),
+        'HOST': os.environ.get("SQL_HOST", "localhost"),
+        'PORT': os.environ.get("SQL_PORT", "5432"),
+        'TEST': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
 }
 
