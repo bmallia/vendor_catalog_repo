@@ -1,14 +1,24 @@
-FROM python:3.8
+FROM python:3.9.6-alpine
 
 ##dont generate pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
 ##message log dont stand in buffer
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /app
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
+
+WORKDIR /usr/src/app
 
 COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN mkdir /app
+WORKDIR /app
 COPY . /app
 
+##EXPOSE 8080
+##RUN python manage.py migrate
+
+##CMD ["python", "manage.py", "runserver"]
