@@ -17,8 +17,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir /app
 WORKDIR /app
 COPY . /app
-
-##EXPOSE 8080
-##RUN python manage.py migrate
-
-##CMD ["python", "manage.py", "runserver"]

@@ -6,7 +6,7 @@ services:
     shm_size: 2gb
     container_name: vendor_service
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000" 
+      sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000" 
     volumes:
       - ./app/:/usr/src/app/
     ports:
@@ -20,11 +20,13 @@ services:
     build:
       context: ./scripts_container/
     environment:
-      - POSTGRES_USER=hello_django
-      - POSTGRES_PASSWORD=hello_django
-      - POSTGRES_DB=hello_django_dev
+      - POSTGRES_USER=bruno
+      - POSTGRES_PASSWORD=bruno
+      - POSTGRES_DB=vendor_catalog
     volumes:
       - postgres_data:/var/lib/postgres/data/
+    ports:
+      - 5433:5432
    
   
 volumes:
