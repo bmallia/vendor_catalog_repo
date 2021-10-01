@@ -101,7 +101,12 @@ Para criar um vendedor utilize o método POST com a seguinte padrão de url e de
 É importante salitentar que conforme a especificação para cada post de vendedor sempre será uma lista de produtos novos
 
 ## pesquisar vendodor por multiplos campos ##
+Segue alguns exemplo de busca por campo:
 
+- buscando por cnpj:
+http://localhost:8000/vendorSearch/49040268000146
+
+- buscando por nome do vendedor
 
 
 
