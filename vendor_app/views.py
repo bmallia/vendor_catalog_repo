@@ -25,6 +25,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
 
+    def put(self, request, *args, **kwargs):
+        pass
 
 class VendorViewSet(viewsets.ModelViewSet):
     
@@ -36,18 +38,29 @@ class VendorViewSet(viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def create(self, request, *args, **kwargs):
+        """
+            Saving the vendor and the relalated product, the specification says doesn't pass
+            id, so always will be a new product is this method
+        """
         data = request.data
-        new_vendor = Vendor.objects.create(name=data['name'], cnpj=data['cnpj'], city=data['city'])
-        new_vendor.save()
-
-        for product in data['products']:
-            product_obj = Product.objects.get(code=product['code'])
-            new_vendor.products.add(product_obj)
-        
-        serializer = VendorSerializer(new_vendor)
+        new_vendor = {}
+        serializer = VendorSerializer(Vendor, data=data)
         serializer.validate(data)
+        if serializer.is_valid():
+            new_vendor = Vendor.objects.create(name=data['name'], cnpj=data['cnpj'], city=data['city'])
 
-        return Response(serializer.data)
+            if data['products']:    
+                for product in data['products']:
+                    product_obj = Product.objects.create(code=product['code'], name=product['name'], price=product['price'])
+                    product_obj.save()
+                    new_vendor.products.add(product_obj)
+            else:
+                new_vendor.products.add([])
+
+            new_vendor.save()   
+        
+        return Response({"error": False, "msg": "Vendor saved sucessfully"""})
+        
 
 class ListVendorViewSet(generics.ListAPIView):
     """ Listing vendors with many field: id, name, cnpj, city """
